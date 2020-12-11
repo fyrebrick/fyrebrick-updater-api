@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./app.js",
+    "docker": "docker build -t snakehead007/fyrebrick-updater-api:latest . && docker push snakehead007/fyrebrick-updater-api:latest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
