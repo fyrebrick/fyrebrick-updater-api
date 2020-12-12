@@ -16,18 +16,8 @@ module.exports = async (req,res,next)=>{
     }else{
         try{
             const shouldBeTwo = 0;
-            await bricklink.ordersAll(user,()=>{
-                shouldBeTwo++;
-                if(shouldBeTwo===2){
-                    res.send({success: true});
-                }
-            });
-            await bricklink.inventoryAll(user,()=>{
-                shouldBeTwo++;
-                if(shouldBeTwo===2){
-                    res.send({success: true});
-                }
-            });
+            await bricklink.ordersAll(user);
+            await bricklink.inventoryAll(user);
         }catch(err){
             res.send({success: false});
             return;

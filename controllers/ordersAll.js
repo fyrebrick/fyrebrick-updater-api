@@ -15,9 +15,7 @@ module.exports = async (req,res,next)=>{
         res.send({success: false});
     }else{
         try{
-            await bricklink.ordersAll(user,"",()=>{
-                res.send({success: true});
-            });
+            await bricklink.ordersAll(user);
         }catch(err){
             res.send({success: false});
             return;
