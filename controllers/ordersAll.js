@@ -15,7 +15,21 @@ module.exports = async (req,res,next)=>{
         res.send({success: false});
     }else{
         try{
-            await bricklink.ordersAll(user);
+            let s = await bricklink.ordersAll(user);
+            if(s===false){
+                logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
+                s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user);
+                if(s===false){
+                    res.send({success:false});
+                    return;
+                }else{
+                    res.send({success:true});
+                    return;
+                }
+            }else{
+                res.send({success:true});
+                return;
+            }
         }catch(err){
             res.send({success: false});
             return;

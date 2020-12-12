@@ -15,7 +15,21 @@ module.exports = async (req,res,next)=>{
         res.send({success: false});
     }else{
         try{
-            bricklink.ordersAll(user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
+            let s = await bricklink.ordersAll(user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
+            if(s===false){
+                logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
+               let s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
+               if(s===false){
+                res.send({success:false});
+                return;
+               }else{
+                res.send({success:true});
+                return;
+               }
+            }else{
+                res.send({success: true});
+                return;
+            }
         }catch(err){
             res.send({success: false});
             return;
