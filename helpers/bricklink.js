@@ -5,7 +5,7 @@ const {isObjectsSame,mappingOrderItemsForChecked} = require('./functions');
 const {logger} = require('./logger');
 const { update } = require('../models/inventory');
 
-module.exports.inventorySingle = async (user,inventory_id) => {
+module.exports.inventorySingle = async (user,inventory_id,callback) => {
     const item = await Inventory.findOne({CONSUMER_KEY:user.CONSUMER_KEY},(err, data)=>{
         if(err){
             logger.error(`Could not find inventory for user ${user.email} : ${err}`);
@@ -35,6 +35,7 @@ module.exports.inventorySingle = async (user,inventory_id) => {
                     logger.error(`Could not update single inventory ${inventory_id} for user ${user.email}: ${err}`);
                     throw err;
                 }
+                callback();
             });
         }
     });
@@ -44,7 +45,7 @@ module.exports.inventorySingle = async (user,inventory_id) => {
  * @description updates and rewrites the users inventory model
  * @param {User} user - Mongodb User schema
  */
-module.exports.inventoryAll = (user) => {
+module.exports.inventoryAll = (user,callback) => {
     const oauth = new OAuth.OAuth(
         user.TOKEN_VALUE,
         user.TOKEN_SECRET,
@@ -88,11 +89,12 @@ module.exports.inventoryAll = (user) => {
                 logger.warn(`Could not receive any data to update inventory for user ${user.email}: ${data.meta.description}`);
                 logger.debug(`${data.meta.description}`)
             }
+            callback();
         }
     );
 }
 
-module.exports.ordersAll = (user,query="")=>{
+module.exports.ordersAll = (user,query="",callback) => {
     const oauth = new OAuth.OAuth(
         user.TOKEN_VALUE,
         user.TOKEN_SECRET,
@@ -187,6 +189,7 @@ module.exports.ordersAll = (user,query="")=>{
             }else{
                 logger.warn(`Could not receive any data to update orders for user ${user.email} : ${data.meta.description}`);
             }
+            callback();
         }
     );
     
