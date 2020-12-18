@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 
 const User = new mongoose.Schema({
+        API_call_amount:{
+            daily:{
+                type:Number,
+                default:0
+            },
+            total:{
+                type:Number,
+                default:0
+            }
+        },
         name: {
             type: String,
         },
@@ -52,21 +62,8 @@ const User = new mongoose.Schema({
     },
 );
 
+
 const user = mongoose.model('User', User);
-
-exports.getUserFromGoogleId = async (gId) => {
-    user.findOne({googleId: gId}, function (err, User) {
-        if (err) throw new Error(err);
-        return User;
-    });
-};
-
-exports.getUserIdFromGoogleId = async (gId) => {
-    user.findOne({googleId: gId}, function (err, User) {
-        if (err) throw new Error(err);
-        return User._id;
-    })
-};
 
 module.exports = user;
 

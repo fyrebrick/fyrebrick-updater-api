@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const {logger} = require('../helpers/logger');
 const bricklink = require('../helpers/bricklink');
+const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../helpers/ApiHelper');
 
 module.exports = async (req,res,next)=>{
     id = req.body._id ;
@@ -15,6 +16,14 @@ module.exports = async (req,res,next)=>{
         res.send({success: false});
     }else{
         try{
+            if(await hasUserExceededAPiAmount(id)){
+                res.send({meta:{
+                    code:429,
+                    message:'User has exceeded the API limit of bricklink'
+                }});
+                return;
+            }
+            increaseApiCallAmount(id);
             let s = await bricklink.ordersAll(user);
             if(s===false){
                 logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
