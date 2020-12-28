@@ -1,7 +1,7 @@
-const User = require('../models/user');
-const {logger} = require('../helpers/logger');
-const bricklink = require('../helpers/bricklink');
-const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../helpers/ApiHelper');
+const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('fyrebrick-helper').helpers.apiHelper;
+const {User} = require('fyrebrick-helper').models;
+const {bricklink} = require('fyrebrick-helper').helpers.bricklink;
+const {logger} = require('fyrebrick-helper').helpers;
 
 module.exports = async (req,res,next)=>{
     id = req.body._id;

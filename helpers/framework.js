@@ -2,7 +2,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const hpp = require('hpp');
 
-const {logger} = require('./logger');
+const {logger} = require('fyrebrick-helper').helpers;
 
 const start = function (app) {
     app.use(cookieParser());

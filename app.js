@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const framework = require('./helpers/framework');
-const {logger} = require('./helpers/logger');
+const {logger} = require('fyrebrick-helper').helpers;
 const routes = require('./routes');
 try {
     mongoose.connect(process.env.DB_URI, {

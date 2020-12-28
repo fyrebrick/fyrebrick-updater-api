@@ -1,7 +1,7 @@
-const Inventory = require('../../models/inventory');
+const {Inventory} = require('fyrebrick-helper').models;
 const bricklinkPlus = require('bricklink-plus');
-const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../../helpers/ApiHelper');
-const User = require('../../models/user');
+const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('fyrebrick-helper').helpers.apiHelper;
+const {User} = require('fyrebrick-helper').models;
 module.exports = {
     new_or_used:async (req,res,next)=>{
         if(await hasUserExceededAPiAmount(req.body._id)){
