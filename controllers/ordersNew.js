@@ -1,6 +1,6 @@
 const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('fyrebrick-helper').helpers.apiHelper;
 const {User} = require('fyrebrick-helper').models;
-const {bricklink} = require('fyrebrick-helper').helpers.bricklink;
+const {bricklink} = require("fyrebrick-helper").helpers;
 const {logger} = require('fyrebrick-helper').helpers;
 
 module.exports = async (req,res,next)=>{
@@ -24,21 +24,22 @@ module.exports = async (req,res,next)=>{
                 return;
             }
             increaseApiCallAmount(id);
-            let s = await bricklink.ordersAll(user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
-            if(s===false){
-                logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
-               let s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
-               if(s===false){
-                res.send({success:false});
-                return;
-               }else{
-                res.send({success:true});
-                return;
-               }
-            }else{
-                res.send({success: true});
-                return;
-            }
+            await bricklink.ordersAll(user,"?direction=in&status=pending,updated,processing,ready,paid,packed").then(async(s)=>{
+                if(s===false){
+                    logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
+                let s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
+                if(s===false){
+                    res.send({success:false});
+                    return;
+                }else{
+                    res.send({success:true});
+                    return;
+                }
+                }else{
+                    res.send({success: true});
+                    return;
+                }
+            });
         }catch(err){
             res.send({success: false});
             return;

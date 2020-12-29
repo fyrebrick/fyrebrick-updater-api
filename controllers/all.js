@@ -1,6 +1,6 @@
 const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('fyrebrick-helper').helpers.apiHelper;
 const {User} = require('fyrebrick-helper').models;
-const {bricklink} = require('fyrebrick-helper').helpers.bricklink;
+const {bricklink} = require("fyrebrick-helper").helpers;
 const {logger} = require('fyrebrick-helper').helpers;
 const TIMEOUT_RESTART = 20*100;
 

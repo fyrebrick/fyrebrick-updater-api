@@ -1,6 +1,6 @@
 const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('fyrebrick-helper').helpers.apiHelper;
 const {User} = require('fyrebrick-helper').models;
-const {bricklink} = require('fyrebrick-helper').helpers.bricklink;
+const {bricklink} = require("fyrebrick-helper").helpers;
 const {logger} = require('fyrebrick-helper').helpers;
 
 module.exports = async (req,res,next)=>{
@@ -24,26 +24,27 @@ module.exports = async (req,res,next)=>{
                 return;
             }
             increaseApiCallAmount(id);
-            let s = await bricklink.inventoryAll(user);
-            if(s===false){
-                logger.warn(`inventoryAll was not successful for user ${user.email}, retrying in 20sec...`);
-                s = timeout(await bricklink.inventoryAll,TIMEOUT_RESTART,user);
+            logger.info(`updating all inventory items of user ${user.email}`);
+            await bricklink.inventoryAll(user).then(async (s)=>{
                 if(s===false){
-                    res.send({success: false});
-                    return;
+                    logger.warn(`inventoryAll was not successful for user ${user.email}, retrying in 20sec...`);
+                    s = timeout(await bricklink.inventoryAll,TIMEOUT_RESTART,user);
+                    if(s===false){
+                        res.send({success: false});
+                        return;
+                    }else{
+                        res.send({success: true});
+                        return;
+                    }
                 }else{
                     res.send({success: true});
                     return;
                 }
-            }else{
-                res.send({success: true});
-                return;
-            }
+            });
         }catch(err){
             res.send({success: false});
             return;
         }
-        res.send({success: true});
         
     }
 };
