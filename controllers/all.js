@@ -25,10 +25,10 @@ module.exports = async (req,res,next)=>{
                 return;
             }
             increaseApiCallAmount(id);
-            let s1 = await bricklink.ordersAll(user);
+            let s1 = await bricklink.order.all(user);
             if(s1===false){
                 logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
-                s1 = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user);
+                s1 = timeout(await bricklink.order.all,TIMEOUT_RESTART,user);
                 if(s1===false){      
                     res.send({success: false});
                     return;
@@ -45,10 +45,10 @@ module.exports = async (req,res,next)=>{
                 return;
             }
             increaseApiCallAmount(id);
-            let s2 = await bricklink.inventoryAll(user);
+            let s2 = await bricklink.inventory.all(user);
             if(s2===false){
                 logger.warn(`inventoryAll was not successful for user ${user.email}, retrying in 20sec...`);
-                s2 = timeout(await bricklink.inventoryAll,TIMEOUT_RESTART,user);
+                s2 = timeout(await bricklink.inventory.all,TIMEOUT_RESTART,user);
                 if(s2===false){
                     res.send({success: false});
                     return;

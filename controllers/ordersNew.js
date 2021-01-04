@@ -24,10 +24,10 @@ module.exports = async (req,res,next)=>{
                 return;
             }
             increaseApiCallAmount(id);
-            await bricklink.ordersAll(user,"?direction=in&status=pending,updated,processing,ready,paid,packed").then(async(s)=>{
+            await bricklink.order.all(user).then(async(s)=>{
                 if(s===false){
                     logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
-                let s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user,"?direction=in&status=pending,updated,processing,ready,paid,packed");
+                let s = timeout(await bricklink.order.all,TIMEOUT_RESTART,user);
                 if(s===false){
                     res.send({success:false});
                     return;

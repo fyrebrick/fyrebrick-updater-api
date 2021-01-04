@@ -25,10 +25,10 @@ module.exports = async (req,res,next)=>{
             }
             increaseApiCallAmount(id);
             logger.info(`updating all orders of user ${user.email}`);
-            await bricklink.ordersAll(user).then(async(s)=>{
+            await bricklink.order.all(user).then(async(s)=>{
                 if(s===false){
                     logger.warn(`ordersAll was not successful for user ${user.email}, retrying in 20sec...`);
-                    s = timeout(await bricklink.ordersAll,TIMEOUT_RESTART,user);
+                    s = timeout(await bricklink.order.all,TIMEOUT_RESTART,user);
                     if(s===false){
                         res.send({success:false});
                         return;
