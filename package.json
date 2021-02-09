@@ -16,10 +16,13 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "fyrebrick-helper": "^1.0.60",
+    "fyrebrick-helper": "^1.0.64",
     "hpp": "^0.2.3",
     "mongoose": "^5.11.7",
     "oauth": "^0.9.15",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "coveralls": "^3.1.0"
   }
 }
