@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./app.js",
-    "private": "sudo docker build --network=host -t ghcr.io/fyrebrick/p-fyrebrick-updater-api . && sudo docker push ghcr.io/fyrebrick/p-fyrebrick-updater-api",
-    "public": "sudo docker build --network=host -t ghcr.io/fyrebrick/fyrebrick-updater-api . && sudo docker push ghcr.io/fyrebrick/fyrebrick-updater-api"
+    "docker": "sudo docker build --network=host -t ghcr.io/fyrebrick/fyrebrick-updater-api . && sudo docker push ghcr.io/fyrebrick/fyrebrick-updater-api"
   },
   "author": "",
   "license": "ISC",
